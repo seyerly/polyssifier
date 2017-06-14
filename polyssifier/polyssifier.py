@@ -84,53 +84,61 @@ def poly(data, label, n_folds=10, scale=True, exclude=[],
     skf.get_n_splits(np.zeros(data.shape[0]), label)
     kf = list(skf.split(np.zeros(data.shape[0]), label))
 
-    # Parallel processing of tasks
-    manager = Manager()
-    args = manager.list()
-    args.append({})  # Store inputs
-    shared = args[0]
-    shared['kf'] = kf
-    shared['X'] = data
-    shared['y'] = label
-    args[0] = shared
-
-    args2 = []
-    for reg_name, val in regressors.items():
-        for n_fold in range(n_folds):
-            args2.append((args, reg_name, val, n_fold, project_name,
-                          save, scoring))
-
-    if concurrency == 1:
-        result = list(starmap(fit_reg, args2))
-    else:
-        pool = Pool(processes=concurrency)
-        result = pool.starmap(fit_reg, args2)
-        pool.close()
-
-    fitted_regs = {key: [] for key in regressors}
+    # # Parallel processing of tasks
+    # manager = Manager()
+    # args = manager.list()
+    # args.append({})  # Store inputs
+    # shared = args[0]
+    # shared['kf'] = kf
+    # shared['X'] = data
+    # shared['y'] = label
+    # args[0] = shared
+    #
+    # args2 = []
+    # for reg_name, val in regressors.items():
+    #     for n_fold in range(n_folds):
+    #         args2.append((args, reg_name, val, n_fold, project_name,
+    #                       save, scoring))
+    #
+    # if concurrency == 1:
+    #     result = list(starmap(fit_reg, args2))
+    # else:
+    #     pool = Pool(processes=concurrency)
+    #     result = pool.starmap(fit_reg, args2)
+    #     pool.close()
+    #
+    # fitted_regs = {key: [] for key in regressors}
 
     # Gather results
     for reg_name in regressors:
-        coefficients[reg_name] = []
-        temp = np.zeros((n_class, n_class))
-        temp_pred = np.zeros((data.shape[0], ))
-        temp_prob = np.zeros((data.shape[0], ))
-        regs = fitted_regs[reg_name]
-        for n in range(n_folds):
-            train_score, test_score, prediction, prob,\
-                coefs, fitted_reg = result.pop(0)
-            regs.append(fitted_reg)
+        # coefficients[reg_name] = []
+        # temp = np.zeros((n_class, n_class))
+        # temp_pred = np.zeros((data.shape[0], ))
+        # temp_prob = np.zeros((data.shape[0], ))
+        # regs = fitted_regs[reg_name]
+        for n, (train_idx, test_idx) in enumerate(kf):
+            model = deepcopy(regressors[reg_name]['reg'])
+            model.fit(data[train_idx , :], label[train_idx])
+            trainingprediction = model.predict(data[train_idx , :])
+            train_score = r2_score(label[train_idx], trainingprediction)
+
+            trainingprediction = model.predict(data[test_idx, :])
+            test_score = r2_score(label[test_idx], trainingprediction)
+
+            # train_score, test_score, prediction, prob,\
+            #     coefs, fitted_reg = result.pop(0)
+            # regs.append(fitted_reg)
             scores.loc[n, (reg_name, 'train')] = train_score
             scores.loc[n, (reg_name, 'test')] = test_score
-            coefficients[reg_name].append(coefs)
+            # coefficients[reg_name].append(coefs)
 
-        confusions[reg_name] = temp
-        test_prob[reg_name] = temp_prob
+        # confusions[reg_name] = temp
+        # test_prob[reg_name] = temp_prob
 
 
     #This loop calculates the cross validation predictions for each regressor pipeline.
-    for key in regressors:
-        predictions[key] = cross_val_predict(regressors.get(key)['reg'], shared['X'], y=label, cv=kf)
+    # for key in regressors:
+    #     predictions[key] = cross_val_predict(regressors.get(key)['reg'], shared['X'], y=label, cv=kf)
 
 
     # Voting

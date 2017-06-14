@@ -123,7 +123,7 @@ def poly(data, label, n_folds=10, scale=True, exclude=[],
             train_score = r2_score(label[train_idx], trainingprediction)
 
             testingprediction = model.predict(data[test_idx, :])
-            test_score = r2_score(data[test_idx], testingprediction)
+            test_score = r2_score(label[test_idx], testingprediction)
 
             # train_score, test_score, prediction, prob,\
             #     coefs, fitted_reg = result.pop(0)

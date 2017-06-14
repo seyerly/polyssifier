@@ -106,8 +106,9 @@ def poly(data, label, n_folds=10, scale=True, exclude=[],
     #     pool = Pool(processes=concurrency)
     #     result = pool.starmap(fit_reg, args2)
     #     pool.close()
-    #
-    # fitted_regs = {key: [] for key in regressors}
+
+
+    #fitted_regs = {key: [] for key in regressors}
 
     # Gather results
     for reg_name in regressors:
@@ -119,10 +120,10 @@ def poly(data, label, n_folds=10, scale=True, exclude=[],
         for n, (train_idx, test_idx) in enumerate(kf):
             model = deepcopy(regressors[reg_name]['reg'])
             model.fit(data[train_idx , :], label[train_idx])
-            trainingprediction = model.predict(data[train_idx , :])
+            trainingprediction = model.predict(data[train_idx, :])
             train_score = r2_score(label[train_idx], trainingprediction)
 
-            testingprediction = model.predict(data[test_idx])
+            testingprediction = model.predict(data[test_idx, :])
             test_score = r2_score(label[test_idx], testingprediction)
 
             # train_score, test_score, prediction, prob,\

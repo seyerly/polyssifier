@@ -110,22 +110,22 @@ def poly(data, label, n_folds=10, scale=True, exclude=[],
     fitted_regs = {key: [] for key in regressors}
 
     # Gather results
-    for reg_name in regressors:
-        coefficients[reg_name] = []
-        temp = np.zeros((n_class, n_class))
-        temp_pred = np.zeros((data.shape[0], ))
-        temp_prob = np.zeros((data.shape[0], ))
-        regs = fitted_regs[reg_name]
-        for n in range(n_folds):
-            train_score, test_score, prediction, prob,\
-                coefs, fitted_reg = result.pop(0)
-            regs.append(fitted_reg)
-            scores.loc[n, (reg_name, 'train')] = train_score
-            scores.loc[n, (reg_name, 'test')] = test_score
-            coefficients[reg_name].append(coefs)
-
-        confusions[reg_name] = temp
-        test_prob[reg_name] = temp_prob
+    # for reg_name in regressors:
+    #     coefficients[reg_name] = []
+    #     temp = np.zeros((n_class, n_class))
+    #     temp_pred = np.zeros((data.shape[0], ))
+    #     temp_prob = np.zeros((data.shape[0], ))
+    #     regs = fitted_regs[reg_name]
+    #     for n in range(n_folds):
+    #         train_score, test_score, prediction, prob,\
+    #             coefs, fitted_reg = result.pop(0)
+    #         regs.append(fitted_reg)
+    #         scores.loc[n, (reg_name, 'train')] = train_score
+    #         scores.loc[n, (reg_name, 'test')] = test_score
+    #         coefficients[reg_name].append(coefs)
+    #
+    #     confusions[reg_name] = temp
+    #     test_prob[reg_name] = temp_prob
 
 
     for key in regressors:

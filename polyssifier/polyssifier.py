@@ -8,7 +8,7 @@ import logging
 import os
 import pandas as pd
 from copy import deepcopy
-from sklearn.model_selection import StratifiedKFold, GridSearchCV, cross_val_predict, cross_val_score KFold
+from sklearn.model_selection import StratifiedKFold, GridSearchCV, cross_val_predict, cross_val_score, KFold
 from sklearn.metrics import f1_score, confusion_matrix, roc_auc_score, mean_squared_error
 from sklearn.externals import joblib
 import time

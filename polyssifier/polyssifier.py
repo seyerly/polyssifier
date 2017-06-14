@@ -8,7 +8,7 @@ import logging
 import os
 import pandas as pd
 from copy import deepcopy
-from sklearn.model_selection import StratifiedKFold, GridSearchCV, cross_val_predict, KFold
+from sklearn.model_selection import StratifiedKFold, GridSearchCV, cross_val_predict, cross_val_score KFold
 from sklearn.metrics import f1_score, confusion_matrix, roc_auc_score, mean_squared_error
 from sklearn.externals import joblib
 import time
@@ -127,6 +127,9 @@ def poly(data, label, n_folds=10, scale=True, exclude=[],
         confusions[reg_name] = temp
         test_prob[reg_name] = temp_prob
 
+
+    for key in regressors:
+        scores[key] = cross_val_score(regressors.get(key)['reg'], shared['X'], y=label, cv=kf)
 
     #This loop calculates the cross validation predictions for each regressor pipeline.
     for key in regressors:

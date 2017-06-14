@@ -130,7 +130,7 @@ def poly(data, label, n_folds=10, scale=True, exclude=[],
 
     for key in regressors:
         scores[key] = cross_val_score(regressors.get(key)['reg'], shared['X'], y=label,
-                                      cv=kf, scoring='neg_mean_sqaure_error')
+                                      cv=kf, scoring='neg_mean_squared_error')
 
     #This loop calculates the cross validation predictions for each regressor pipeline.
     for key in regressors:

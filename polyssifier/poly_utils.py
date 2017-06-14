@@ -169,7 +169,7 @@ def build_regressors(exclude, scale, feature_selection, nCols):
     if 'Ridge' not in exclude:
         regressors['Ridge'] = {
             'reg': Ridge(),
-            'parameters': {}
+            'parameters': {'alpha':[1e-10, 1e-1]}
         }
 
     if 'Lasso' not in exclude:

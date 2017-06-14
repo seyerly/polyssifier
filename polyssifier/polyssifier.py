@@ -9,7 +9,7 @@ import os
 import pandas as pd
 from copy import deepcopy
 from sklearn.model_selection import StratifiedKFold, GridSearchCV, cross_val_predict, cross_val_score, KFold
-from sklearn.metrics import f1_score, confusion_matrix, roc_auc_score, mean_squared_error
+from sklearn.metrics import f1_score, confusion_matrix, roc_auc_score, mean_squared_error, r2_score
 from sklearn.externals import joblib
 import time
 from sklearn.preprocessing import LabelEncoder
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 def poly(data, label, n_folds=10, scale=True, exclude=[],
-         feature_selection=False, save=True, scoring='auc',
+         feature_selection=False, save=True, scoring='r2',
          project_name='', concurrency=1, verbose=True):
     '''
     Input
@@ -174,7 +174,7 @@ def _scorer(reg, X, y):
     Output:
     - The mean square error of the regressor function for that training data set
     '''
-    return mean_squared_error(y, reg.predict(X))
+    return r2_score(y, reg.predict(X))
 
 
 def fit_reg(args, reg_name, val, n_fold, project_name, save, scoring):

@@ -200,45 +200,37 @@ def build_regressors(exclude, scale, feature_selection, nCols):
     if 'PassiveAggressiveRegressor' not in exclude:
         regressors['PassiveAggressiveRegressor'] = {
             'reg': PassiveAggressiveRegressor(),
-            'parameters': {'C': [0.5, 1.0, 1.5]
-                           }
+            'parameters': {'C': [0.01, 0.1, 1.0, 10.0]}
         }
 
     if 'GaussianProcessRegressor' not in exclude:
         regressors['GaussianProcessRegressor'] = {
             'reg': GaussianProcessRegressor(),
-            'parameters': {
-                'alpha': [0.01, 0.1, 1.0, 10.0],
-                'kernel': [RBF(x) for x in [0.01, 1.0, 100.0, 1000.0]],
-            }
+            'parameters': {'alpha': [0.01, 0.1, 1.0, 10.0]}
         }
 
     if 'Ridge' not in exclude:
         regressors['Ridge'] = {
             'reg': Ridge(),
-            'parameters': {
-                'alpha': [0.25, 0.50, 0.75, 1.00]
-            }
+            'parameters': {'alpha': [0.25, 0.50, 0.75, 1.00]}
         }
 
     if 'Lasso' not in exclude:
         regressors['Lasso'] = {
             'reg': Lasso(),
-            'parameters': {
-                'alpha': [0.25, 0.50, 0.75, 1.00]
-            }
+            'parameters': {'alpha': [0.25, 0.50, 0.75, 1.00]}
         }
 
     if 'Lars' not in exclude:
         regressors['Lars'] = {
             'reg': Lars(),
-            'parameters': {}  # Best to leave the default parameters
+            'parameters': {'alpha': [0.01, 0.1, 1.0, 10.0]}
         }
 
     if 'LassoLars' not in exclude:
         regressors['LassoLars'] = {
             'reg': LassoLars(),
-            'parameters': {'alpha': [0.25, 0.50, 0.75, 1.00, 10.0]}
+            'parameters': {'alpha': [0.01, 0.1, 1.0, 10.0]}
         }
 
     if 'OrthogonalMatchingPursuit' not in exclude:

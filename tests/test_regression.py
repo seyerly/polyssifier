@@ -32,7 +32,7 @@ def test_run_regression():
     report = polyr(diabetes_data, diabetes_target, n_folds=2,
                    verbose=1, concurrency=1,
                    feature_selection=False, scoring='r2',
-                   save=False, project_name='test_regression')
+                   save=False, project_name='test_regression', exclude=['GaussianProcessRegressor'])
     assert (report.scores.mean()[:, 'test'] > 0.2).all(),\
         'test score below chance'
     assert (report.scores.mean()[:, 'train'] > 0.2).all(),\

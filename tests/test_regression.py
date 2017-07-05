@@ -43,7 +43,7 @@ def test_polynomial_model():
     #Lars excluded as it performs poorly.
     polynomial_report = polyr(diabetes_data, diabetes_target, n_folds=2, num_degrees=3,
                               verbose=1, concurrency=1, feature_selection=False, save=False,
-                              project_name='polynomial_test', exclude=['Lars'])
+                              project_name='polynomial_test', exclude=['Lars', 'GaussianProcessRegressor'])
     assert (polynomial_report.scores.mean()[:, 'test'] > 0.3).all(), \
         'test score below chance'
 

@@ -16,9 +16,9 @@ def test_feature_selection_regression():
                                  verbose=1, concurrency=1,
                                  feature_selection=True, scoring='r2',
                                  save=False, project_name='test_feature_selection')
-    assert (report_with_features.scores.median()[:, 'test'] > 0.2).all(),\
+    assert ((report_with_features.scores.mean()[:, 'test']).median() > 0.2),\
         'test score below chance'
-    assert (report_with_features.scores.median()[:, 'train'] > 0.2).all(),\
+    assert ((report_with_features.scores.mean()[:, 'train']).median() > 0.2),\
         'train score below chance'
 
     for key, ypred in report_with_features.predictions.iteritems():
@@ -33,9 +33,9 @@ def test_run_regression():
                    verbose=1, concurrency=1,
                    feature_selection=False, scoring='r2',
                    save=False, project_name='test_regression')
-    assert ((report.scores.mean()[:, 'test']).median > 0.2),\
+    assert ((report.scores.mean()[:, 'test']).median() > 0.2),\
         'test score below chance'
-    assert ((report.scores.mean()[:, 'train']).median > 0.2),\
+    assert ((report.scores.mean()[:, 'train']).median() > 0.2),\
         'train score below chance'
 
 @pytest.mark.medium
@@ -44,7 +44,7 @@ def test_polynomial_model():
     polynomial_report = polyr(diabetes_data, diabetes_target, n_folds=2, num_degrees=3,
                               verbose=1, concurrency=1, feature_selection=False, save=False,
                               project_name='polynomial_test')
-    assert ((polynomial_report.scores.mean()[:, 'test']).median > 0.3), \
+    assert ((polynomial_report.scores.mean()[:, 'test']).median() > 0.3), \
         'test score below chance'
 
 @pytest.mark.medium
